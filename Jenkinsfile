@@ -15,6 +15,22 @@ pipeline {
         timeout(time: 20, unit: 'MINUTES')
     }
 
+    triggers {
+        // Allows remote triggering via:
+        // http://JENKINS_URL/job/backend-docker/build?token=BACKEND_DOCKER_TOKEN
+        // or with parameters:
+        // http://JENKINS_URL/job/backend-docker/buildWithParameters?token=BACKEND_DOCKER_TOKEN&cause=Triggered+by+webhook
+        GenericTrigger(
+            genericVariables: [
+                [key: 'cause', value: '$.cause', defaultValue: 'Remote trigger']
+            ],
+            token: 'BACKEND_DOCKER_TOKEN',
+            causeString: 'Triggered remotely: $cause',
+            printContributedVariables: true,
+            printPostContent: false
+        )
+    }
+
     stages {
 
         stage('Checkout') {
