@@ -1,0 +1,36 @@
+version: '3.9'
+
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: production
+    image: backend-docker:latest
+    container_name: backend-docker-app
+    ports:
+      - '3000:3000'
+    environment:
+      - NODE_ENV=production
+      - PORT=3000
+    restart: unless-stopped
+    healthcheck:
+      test: ['CMD', 'wget', '-qO-', 'http://localhost:3000/health']
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 10s
+
+  # Uncomment below to add a local Jenkins instance for testing
+  # jenkins:
+  #   image: jenkins/jenkins:lts-jdk17
+  #   container_name: jenkins
+  #   ports:
+  #     - '8080:8080'
+  #     - '50000:50000'
+  #   volumes:
+  #     - jenkins_home:/var/jenkins_home
+  #   restart: unless-stopped
+
+# volumes:
+#   jenkins_home:
