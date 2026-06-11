@@ -22,6 +22,7 @@ app.get('/api/items', (req, res) => {
     { id: 2, name: 'Item Two' },
     { id: 3, name: 'Item Three' },
     { id: 4, name: 'Item Four' },
+    { id: 5, name: 'Item Five' },
   ];
   res.json(items);
 });
